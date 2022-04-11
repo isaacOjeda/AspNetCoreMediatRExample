@@ -1,2 +1,6 @@
-**/bin/*
-**/obj/*
+**/bin/**
+**/obj/**
+src/MediatrExample.ApplicationCore/obj/**
+src/MediatrExample.ApplicationCore/bin/**
+src/MediatrExample.WebApi/obj/**
+src/MediatrExample.WebApi/bin/**
