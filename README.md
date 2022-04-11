@@ -18,10 +18,10 @@ La intención de esta serie de posts es para aprender sobre muchos temas y conce
 
 ## Tecnologías usadas
 
-- MediatR para CQRS
-- AutoMapper para mapeo de objetos
-- FluentValidation para validación de entrada
-- Hashids para crear IDs seguros
-- Audit.NET para auditar
-- ASP.NET Identity Core para seguridad y usuarios
+- [MediatR](https://github.com/jbogard/MediatR) para CQRS
+- [AutoMapper](https://github.com/AutoMapper/AutoMapper) para mapeo de objetos
+- [FluentValidation](https://github.com/FluentValidation/FluentValidation) para validación de entrada
+- [Hashids.net](https://github.com/ullmark/hashids.net) para crear IDs seguros
+- [Audit.NET](https://github.com/thepirat000/Audit.NET) para auditar con persistencia en [blobs](https://github.com/thepirat000/Audit.NET/blob/master/src/Audit.NET.AzureStorageBlobs/README.md)
+- [ASP.NET Identity Core](https://github.com/dotnet/aspnetcore/tree/main/src/Identity) para seguridad y usuarios
 - Próximamente más⌛...
