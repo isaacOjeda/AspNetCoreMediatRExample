@@ -11,6 +11,7 @@ Cada publicación contiene el código que corresponde a esa publicación, de las
 - [Identity Core y JWT](https://dev.to/isaacojeda/part-aspnet-identity-core-y-jwt-1l84)
 - [Refactorizando a Vertical Slice Architecture](https://dev.to/isaacojeda/parte-6-aspnet-refactorizando-la-solucion-vertical-slice-architecture-d39)
 - [Creando Sistemas Auditables](https://dev.to/isaacojeda/parte-7-aspnet-creando-un-sistema-auditable-31nf)
+- [Logging con Serilog](https://dev.to/isaacojeda/parte-9-aspnet-core-logging-con-serilog-48o4)
 - Próximamente más⌛...
 
 ## Temas de las publicaciones
@@ -24,4 +25,5 @@ La intención de esta serie de posts es para aprender sobre muchos temas y conce
 - [Hashids.net](https://github.com/ullmark/hashids.net) para crear IDs seguros
 - [Audit.NET](https://github.com/thepirat000/Audit.NET) para auditar con persistencia en [blobs](https://github.com/thepirat000/Audit.NET/blob/master/src/Audit.NET.AzureStorageBlobs/README.md)
 - [ASP.NET Identity Core](https://github.com/dotnet/aspnetcore/tree/main/src/Identity) para seguridad y usuarios
+- [Serilog](https://github.com/serilog/serilog)
 - Próximamente más⌛...
