@@ -1,0 +1,16 @@
+2022-04-14 10:42:31.447 -06:00 [INF] Iniciando Web API
+2022-04-14 10:42:32.417 -06:00 [INF] Corriendo en:
+2022-04-14 10:42:32.420 -06:00 [INF] https://localhost:7113
+2022-04-14 10:42:32.422 -06:00 [INF] http://localhost:5144
+2022-04-14 10:42:34.539 -06:00 [INF] CreateProductCommand: 759aa503-f916-4962-96ed-be0b416b5632 with request {"Description":"New Product","Price":9952,"$type":"CreateProductCommand"}
+2022-04-14 10:42:35.738 -06:00 [INF] CreateProductCommand: 759aa503-f916-4962-96ed-be0b416b5632 with request {"Description":"New Product","Price":9952,"$type":"CreateProductCommand"}
+2022-04-14 10:42:36.893 -06:00 [INF] CreateProductCommand: 759aa503-f916-4962-96ed-be0b416b5632 with request {"Description":"New Product","Price":9952,"$type":"CreateProductCommand"}
+2022-04-14 10:42:37.547 -06:00 [INF] CreateProductCommand: 759aa503-f916-4962-96ed-be0b416b5632 with request {"Description":"New Product","Price":9952,"$type":"CreateProductCommand"}
+2022-04-14 10:42:38.342 -06:00 [INF] CreateProductCommand: 759aa503-f916-4962-96ed-be0b416b5632 with request {"Description":"New Product","Price":9952,"$type":"CreateProductCommand"}
+2022-04-14 10:42:38.839 -06:00 [INF] CreateProductCommand: 759aa503-f916-4962-96ed-be0b416b5632 with request {"Description":"New Product","Price":9952,"$type":"CreateProductCommand"}
+2022-04-14 10:42:39.234 -06:00 [INF] CreateProductCommand: 759aa503-f916-4962-96ed-be0b416b5632 with request {"Description":"New Product","Price":9952,"$type":"CreateProductCommand"}
+2022-04-14 11:31:39.426 -06:00 [INF] Iniciando Web API
+2022-04-14 11:31:40.594 -06:00 [INF] Corriendo en:
+2022-04-14 11:31:40.597 -06:00 [INF] https://localhost:7113
+2022-04-14 11:31:40.599 -06:00 [INF] http://localhost:5144
+2022-04-14 11:31:42.329 -06:00 [INF] CreateProductCommand: 759aa503-f916-4962-96ed-be0b416b5632 with request MediatrExample.ApplicationCore.Features.Products.Commands.CreateProductCommand

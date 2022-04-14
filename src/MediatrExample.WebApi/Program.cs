@@ -2,9 +2,19 @@ using MediatrExample.ApplicationCore;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 using MediatrExample.WebApi;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 builder.Services.AddWebApi();
 builder.Services.AddApplicationCore();
@@ -26,9 +36,31 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await SeedProducts();
+try
+{
 
-app.Run();
+
+    Log.Information("Iniciando Web API");
+
+    await SeedProducts();
+
+    Log.Information("Corriendo en:");
+    Log.Information("https://localhost:7113");
+    Log.Information("http://localhost:5144");
+
+    app.Run();
+
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+
+    return;
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
 
 async Task SeedProducts()
