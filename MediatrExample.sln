@@ -9,9 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatrExample.WebApi", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatrExample.ApplicationCore", "src\MediatrExample.ApplicationCore\MediatrExample.ApplicationCore.csproj", "{F9EA9774-CD48-4EAB-9A0B-1DD15E0EF580}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRExample.IntegrationTests", "tests\MediatRExample.IntegrationTests\MediatRExample.IntegrationTests.csproj", "{9AA4BABB-A4C1-4B6B-BB51-345435A48138}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRExample.IntegrationTests", "tests\MediatRExample.IntegrationTests\MediatRExample.IntegrationTests.csproj", "{9AA4BABB-A4C1-4B6B-BB51-345435A48138}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{912DBDD5-2EE5-4D73-9C18-1EB31E00F771}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8BE51DB2-C378-48BD-B840-35B91700C365}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
