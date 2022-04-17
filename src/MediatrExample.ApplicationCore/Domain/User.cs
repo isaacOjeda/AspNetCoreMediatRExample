@@ -3,6 +3,6 @@
 namespace MediatrExample.ApplicationCore.Domain;
 public class User : IdentityUser
 {
-    public ICollection<AccessToken> AccessTokens { get; set; } =
-        new HashSet<AccessToken>();
+    public ICollection<RefreshToken> AccessTokens { get; set; } =
+        new HashSet<RefreshToken>();
 }

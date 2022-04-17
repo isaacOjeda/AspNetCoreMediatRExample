@@ -1,9 +1,9 @@
 ﻿namespace MediatrExample.ApplicationCore.Domain;
 
-public class AccessToken
+public class RefreshToken
 {
-    public int AccessTokenId { get; set; }
-    public string AccessTokenValue { get; set; }
+    public int RefreshTokenId { get; set; }
+    public string RefreshTokenValue { get; set; }
     public bool Active { get; set; }
     public DateTime Expiration { get; set; }
     public bool Used { get; set; }

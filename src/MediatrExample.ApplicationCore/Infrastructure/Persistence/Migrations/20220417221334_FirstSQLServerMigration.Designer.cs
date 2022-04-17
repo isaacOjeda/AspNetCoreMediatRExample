@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediatrExample.ApplicationCore.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(MyAppDbContext))]
-    [Migration("20220417212459_FirstSQLServerMigration")]
+    [Migration("20220417221334_FirstSQLServerMigration")]
     partial class FirstSQLServerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,38 +23,6 @@ namespace MediatrExample.ApplicationCore.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("MediatrExample.ApplicationCore.Domain.AccessToken", b =>
-                {
-                    b.Property<int>("AccessTokenId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccessTokenId"), 1L, 1);
-
-                    b.Property<string>("AccessTokenValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("Expiration")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Used")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("AccessTokenId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AccessTokens");
-                });
 
             modelBuilder.Entity("MediatrExample.ApplicationCore.Domain.Product", b =>
                 {
@@ -86,6 +54,38 @@ namespace MediatrExample.ApplicationCore.Infrastructure.Persistence.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("MediatrExample.ApplicationCore.Domain.RefreshToken", b =>
+                {
+                    b.Property<int>("RefreshTokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RefreshTokenId"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RefreshTokenValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Used")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("RefreshTokenId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -299,7 +299,7 @@ namespace MediatrExample.ApplicationCore.Infrastructure.Persistence.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("MediatrExample.ApplicationCore.Domain.AccessToken", b =>
+            modelBuilder.Entity("MediatrExample.ApplicationCore.Domain.RefreshToken", b =>
                 {
                     b.HasOne("MediatrExample.ApplicationCore.Domain.User", "User")
                         .WithMany("AccessTokens")
