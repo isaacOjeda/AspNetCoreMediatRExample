@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MediatrExample.ApplicationCore.Common.Exceptions;
+using MediatrExample.ApplicationCore.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -18,10 +19,10 @@ public class TokenCommand : IRequest<TokenCommandResponse>
 
 public class TokenCommandHandler : IRequestHandler<TokenCommand, TokenCommandResponse>
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly IConfiguration _config;
 
-    public TokenCommandHandler(UserManager<IdentityUser> userManager, IConfiguration config)
+    public TokenCommandHandler(UserManager<User> userManager, IConfiguration config)
     {
         _userManager = userManager;
         _config = config;

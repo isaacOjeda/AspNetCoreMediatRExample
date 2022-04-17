@@ -2,6 +2,7 @@
 using MediatR;
 using MediatrExample.ApplicationCore.Common.Attributes;
 using MediatrExample.ApplicationCore.Common.Exceptions;
+using MediatrExample.ApplicationCore.Common.Helpers;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 
 namespace MediatrExample.ApplicationCore.Features.Products.Commands;
@@ -9,7 +10,7 @@ namespace MediatrExample.ApplicationCore.Features.Products.Commands;
 [AuditLog]
 public class UpdateProductCommand : IRequest
 {
-    public int ProductId { get; set; }
+    public string ProductId { get; set; }
     public string Description { get; set; } = default!;
     public double Price { get; set; }
 }
@@ -25,7 +26,8 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
 
     public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _context.Products.FindAsync(request.ProductId);
+        var productId = request.ProductId.FromHashId();
+        var product = await _context.Products.FindAsync(productId);
 
         if (product is null)
         {

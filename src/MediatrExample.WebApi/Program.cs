@@ -1,4 +1,5 @@
 using MediatrExample.ApplicationCore;
+using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 using MediatrExample.WebApi;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +14,7 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .Enrich.FromLogContext()
     .WriteTo.Console()
-    .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+    // .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 builder.Services.AddWebApi();
@@ -38,8 +39,6 @@ app.MapControllers();
 
 try
 {
-
-
     Log.Information("Iniciando Web API");
 
     await SeedProducts();
@@ -67,7 +66,7 @@ async Task SeedProducts()
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<MyAppDbContext>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
     context.Database.EnsureCreated();

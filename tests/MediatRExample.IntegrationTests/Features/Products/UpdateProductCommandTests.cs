@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MediatrExample.ApplicationCore.Common.Helpers;
 using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Features.Products.Commands;
 using NUnit.Framework;
@@ -14,10 +15,11 @@ public class UpdateProductCommandTests : TestBase
     public async Task Product_IsUpdated_WithValidFields_AndAuthUser()
     {
         // Arrenge
+        var productDemo = await FindAsync<Product>(q => 1 == 1);
         var (Client, UserId) = await GetClientAsAdmin();
         var command = new UpdateProductCommand
         {
-            ProductId = 1,
+            ProductId = productDemo.ProductId.ToHashId(),
             Description = "Updated Product",
             Price = 123456
         };
@@ -29,7 +31,7 @@ public class UpdateProductCommandTests : TestBase
         FluentActions.Invoking(() => result.EnsureSuccessStatusCode())
             .Should().NotThrow();
 
-        var product = await FindAsync<Product>(command.ProductId);
+        var product = await FindAsync<Product>(command.ProductId.FromHashId());
 
         product.Should().NotBeNull();
         product.Description.Should().Be(command.Description);
@@ -41,10 +43,11 @@ public class UpdateProductCommandTests : TestBase
     public async Task Product_IsUpdated_WithInvalidFields_AndAuthUser()
     {
         // Arrenge
+        var productDemo = await FindAsync<Product>(q => 1 == 1);
         var (Client, UserId) = await GetClientAsAdmin();
         var command = new UpdateProductCommand
         {
-            ProductId = 1,
+            ProductId = productDemo.ProductId.ToHashId(),
             Description = string.Empty,
             Price = 0
         };
@@ -56,7 +59,7 @@ public class UpdateProductCommandTests : TestBase
         FluentActions.Invoking(() => result.EnsureSuccessStatusCode())
             .Should().Throw<HttpRequestException>();
 
-        var updatedProduct = await FindAsync<Product>(command.ProductId);
+        var updatedProduct = await FindAsync<Product>(command.ProductId.FromHashId());
 
         updatedProduct.Should().NotBeNull();
         updatedProduct.Description.Should().NotBe(command.Description);
@@ -67,10 +70,11 @@ public class UpdateProductCommandTests : TestBase
     public async Task Product_IsNotUpdated_WithValidFields_AndAnonymUser()
     {
         // Arrenge
+        var productDemo = await FindAsync<Product>(q => 1 == 1);
         var (Client, UserId) = await GetClientAsDefaultUserAsync();
         var command = new UpdateProductCommand
         {
-            ProductId = 1,
+            ProductId = productDemo.ProductId.ToHashId(),
             Description = "Updated Product",
             Price = 123456
         };
@@ -82,7 +86,7 @@ public class UpdateProductCommandTests : TestBase
         FluentActions.Invoking(() => result.EnsureSuccessStatusCode())
             .Should().Throw<HttpRequestException>();
 
-        var updatedProduct = await FindAsync<Product>(command.ProductId);
+        var updatedProduct = await FindAsync<Product>(command.ProductId.FromHashId());
 
         updatedProduct.Should().NotBeNull();
         updatedProduct.Description.Should().NotBe(command.Description);

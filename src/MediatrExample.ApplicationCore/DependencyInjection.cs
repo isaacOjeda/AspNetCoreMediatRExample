@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using MediatrExample.ApplicationCore.Common.Behaviours;
 using MediatrExample.ApplicationCore.Common.Interfaces;
+using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +29,14 @@ public static class DependencyInjection
 
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSqlite<MyAppDbContext>(configuration.GetConnectionString("Default"));
+        if (configuration.GetValue<bool>("UseSqlite"))
+        {
+            services.AddSqlite<MyAppDbContext>(configuration.GetConnectionString("Sqlite"));
+        }
+        else
+        {
+            services.AddSqlServer<MyAppDbContext>(configuration.GetConnectionString("SqlServer"));
+        }
 
         Configuration.Setup()
             .UseAzureStorageBlobs(config => config
@@ -49,7 +57,7 @@ public static class DependencyInjection
     {
 
         services
-            .AddIdentityCore<IdentityUser>()
+            .AddIdentityCore<User>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<MyAppDbContext>();
 
