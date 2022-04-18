@@ -23,6 +23,10 @@ public class AuthController : ControllerBase
     public Task<TokenCommandResponse> Token([FromBody] TokenCommand command) =>
         _mediator.Send(command);
 
+    [HttpPost("refresh")]
+    public Task<RefreshTokenCommandResponse> RefreshToken([FromBody] RefreshTokenCommand command) =>
+        _mediator.Send(command);
+
 
     [Authorize]
     [HttpGet("me")]

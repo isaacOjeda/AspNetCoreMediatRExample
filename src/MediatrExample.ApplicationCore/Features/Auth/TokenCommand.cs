@@ -1,12 +1,9 @@
 ﻿using MediatR;
 using MediatrExample.ApplicationCore.Common.Exceptions;
+using MediatrExample.ApplicationCore.Common.Services;
 using MediatrExample.ApplicationCore.Domain;
+using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace MediatrExample.ApplicationCore.Features.Auth;
 public class TokenCommand : IRequest<TokenCommandResponse>
@@ -20,17 +17,18 @@ public class TokenCommand : IRequest<TokenCommandResponse>
 public class TokenCommandHandler : IRequestHandler<TokenCommand, TokenCommandResponse>
 {
     private readonly UserManager<User> _userManager;
-    private readonly IConfiguration _config;
+    private readonly AuthService _authService;
+    private readonly MyAppDbContext _context;
 
-    public TokenCommandHandler(UserManager<User> userManager, IConfiguration config)
+    public TokenCommandHandler(UserManager<User> userManager, AuthService authService, MyAppDbContext context)
     {
         _userManager = userManager;
-        _config = config;
+        _authService = authService;
+        _context = context;
     }
 
     public async Task<TokenCommandResponse> Handle(TokenCommand request, CancellationToken cancellationToken)
     {
-        // Verificamos credenciales con Identity
         var user = await _userManager.FindByNameAsync(request.UserName);
 
         if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
@@ -38,34 +36,24 @@ public class TokenCommandHandler : IRequestHandler<TokenCommand, TokenCommandRes
             throw new ForbiddenAccessException();
         }
 
-        var roles = await _userManager.GetRolesAsync(user);
-
-        // Generamos un token según los claims
-        var claims = new List<Claim>
+        var jwt = await _authService.GenerateAccessToken(user);
+        var newAccessToken = new RefreshToken
         {
-            new Claim(ClaimTypes.Sid, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName)
+            Active = true,
+            Expiration = DateTime.UtcNow.AddDays(7),
+            RefreshTokenValue = Guid.NewGuid().ToString("N"),
+            Used = false,
+            UserId = user.Id
         };
 
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
+        _context.Add(newAccessToken);
 
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-        var tokenDescriptor = new JwtSecurityToken(
-            issuer: _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(720),
-            signingCredentials: credentials);
-
-        var jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+        await _context.SaveChangesAsync();
 
         return new TokenCommandResponse
         {
-            AccessToken = jwt
+            AccessToken = jwt,
+            RefreshToken = newAccessToken.RefreshTokenValue
         };
     }
 }
@@ -73,4 +61,5 @@ public class TokenCommandHandler : IRequestHandler<TokenCommand, TokenCommandRes
 public class TokenCommandResponse
 {
     public string AccessToken { get; set; } = default!;
+    public string RefreshToken { get; set; } = default!;
 }

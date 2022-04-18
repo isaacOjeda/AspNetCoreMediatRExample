@@ -16,7 +16,7 @@ public class UpdateProductCommandTests : TestBase
     {
         // Arrenge
         var productDemo = await FindAsync<Product>(q => 1 == 1);
-        var (Client, UserId) = await GetClientAsAdmin();
+        var (Client, UserId, _) = await GetClientAsAdmin();
         var command = new UpdateProductCommand
         {
             ProductId = productDemo.ProductId.ToHashId(),
@@ -44,7 +44,7 @@ public class UpdateProductCommandTests : TestBase
     {
         // Arrenge
         var productDemo = await FindAsync<Product>(q => 1 == 1);
-        var (Client, UserId) = await GetClientAsAdmin();
+        var (Client, UserId, _) = await GetClientAsAdmin();
         var command = new UpdateProductCommand
         {
             ProductId = productDemo.ProductId.ToHashId(),
@@ -71,7 +71,7 @@ public class UpdateProductCommandTests : TestBase
     {
         // Arrenge
         var productDemo = await FindAsync<Product>(q => 1 == 1);
-        var (Client, UserId) = await GetClientAsDefaultUserAsync();
+        var (Client, UserId, _) = await GetClientAsDefaultUserAsync();
         var command = new UpdateProductCommand
         {
             ProductId = productDemo.ProductId.ToHashId(),

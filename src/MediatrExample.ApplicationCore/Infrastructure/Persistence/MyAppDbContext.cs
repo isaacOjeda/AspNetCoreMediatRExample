@@ -1,12 +1,11 @@
 ﻿using MediatrExample.ApplicationCore.Common.Interfaces;
 using MediatrExample.ApplicationCore.Domain;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace MediatrExample.ApplicationCore.Infrastructure.Persistence;
-public class MyAppDbContext : IdentityDbContext<IdentityUser>
+public class MyAppDbContext : IdentityDbContext<User>
 {
     private readonly CurrentUser _user;
 

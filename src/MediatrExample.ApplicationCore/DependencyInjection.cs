@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using MediatrExample.ApplicationCore.Common.Behaviours;
 using MediatrExample.ApplicationCore.Common.Interfaces;
+using MediatrExample.ApplicationCore.Common.Services;
 using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,6 +24,8 @@ public static class DependencyInjection
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuditLogsBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+        services.AddScoped<AuthService>();
 
         return services;
     }
