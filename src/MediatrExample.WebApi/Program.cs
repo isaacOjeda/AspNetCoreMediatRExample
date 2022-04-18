@@ -71,6 +71,10 @@ async Task SeedProducts()
 
     context.Database.EnsureCreated();
 
-    await MyAppDbContextSeed.SeedDataAsync(context);
-    await MyAppDbContextSeed.SeedUsersAsync(userManager, roleManager);
+    if (app.Environment.IsDevelopment())
+    {
+        await MyAppDbContextSeed.SeedDataAsync(context);
+        await MyAppDbContextSeed.SeedUsersAsync(userManager, roleManager);
+    }
+
 }

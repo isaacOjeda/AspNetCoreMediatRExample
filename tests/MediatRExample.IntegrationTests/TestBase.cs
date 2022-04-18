@@ -191,7 +191,7 @@ public class TestBase
             };
             var config = scope.ServiceProvider.GetService<IConfiguration>();
 
-            await checkpoint.Reset(config.GetConnectionString("SqlServer"));
+            await checkpoint.Reset(config.GetConnectionString("Default"));
 
         }
 

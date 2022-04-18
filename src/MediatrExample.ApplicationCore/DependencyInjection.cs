@@ -8,6 +8,7 @@ using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -32,14 +33,17 @@ public static class DependencyInjection
 
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        if (configuration.GetValue<bool>("UseSqlite"))
+        services.AddDbContext<MyAppDbContext>(options =>
         {
-            services.AddSqlite<MyAppDbContext>(configuration.GetConnectionString("Sqlite"));
-        }
-        else
-        {
-            services.AddSqlServer<MyAppDbContext>(configuration.GetConnectionString("SqlServer"));
-        }
+            if (configuration.GetValue<bool>("UseInMemory"))
+            {
+                options.UseInMemoryDatabase(nameof(MyAppDbContext));
+            }
+            else
+            {
+                options.UseSqlServer(configuration.GetConnectionString("Default"));
+            }
+        });
 
         Configuration.Setup()
             .UseAzureStorageBlobs(config => config
