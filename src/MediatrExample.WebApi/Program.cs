@@ -2,6 +2,7 @@ using MediatrExample.ApplicationCore;
 using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 using MediatrExample.WebApi;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
 using Serilog.Events;
@@ -10,19 +11,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    // .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
-
 builder.Services.AddWebApi();
 builder.Services.AddApplicationCore();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddSecurity(builder.Configuration);
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.ApplicationInsights(app.Services.GetRequiredService<TelemetryConfiguration>(), TelemetryConverter.Traces)
+    // .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -10,7 +10,7 @@ namespace MediatrExample.ApplicationCore.Features.Products.Commands;
 [AuditLog]
 public class UpdateProductCommand : IRequest
 {
-    public string ProductId { get; set; }
+    public string ProductId { get; set; } = default!;
     public string Description { get; set; } = default!;
     public double Price { get; set; }
 }
