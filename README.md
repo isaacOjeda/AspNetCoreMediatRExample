@@ -13,6 +13,7 @@ Cada publicación contiene el código que corresponde a esa publicación, de las
 - [Creando Sistemas Auditables](https://dev.to/isaacojeda/parte-7-aspnet-creando-un-sistema-auditable-31nf)
 - [Logging con Serilog](https://dev.to/isaacojeda/parte-9-aspnet-core-logging-con-serilog-48o4)
 - [Refresh Tokens](https://dev.to/isaacojeda/parte-10-aspnet-refresh-tokens-4em)
+- [Application Performance Monitoring](https://dev.to/isaacojeda/parte-11-aspnet-core-application-insights-y-serilog-3103)
 - Próximamente más⌛...
 
 ## Temas de las publicaciones
@@ -27,4 +28,5 @@ La intención de esta serie de posts es para aprender sobre muchos temas y conce
 - [Audit.NET](https://github.com/thepirat000/Audit.NET) para auditar con persistencia en [blobs](https://github.com/thepirat000/Audit.NET/blob/master/src/Audit.NET.AzureStorageBlobs/README.md)
 - [ASP.NET Identity Core](https://github.com/dotnet/aspnetcore/tree/main/src/Identity) para seguridad y usuarios
 - [Serilog](https://github.com/serilog/serilog)
+- [Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
 - Próximamente más⌛...
