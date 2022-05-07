@@ -18,6 +18,8 @@ public class MyAppDbContext : IdentityDbContext<User>
 
     public DbSet<Product> Products => Set<Product>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<Checkout> Checkouts => Set<Checkout>();
+    public DbSet<CheckoutProduct> CheckoutProducts => Set<CheckoutProduct>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

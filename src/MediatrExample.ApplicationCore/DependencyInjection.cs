@@ -6,6 +6,7 @@ using MediatrExample.ApplicationCore.Common.Interfaces;
 using MediatrExample.ApplicationCore.Common.Services;
 using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
+using MediatrExample.ApplicationCore.Infrastructure.Services.AzureQueues;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +57,13 @@ public static class DependencyInjection
                     return $"{ev.EventType}/{currentUser?.Id}_{DateTime.UtcNow.Ticks}.json";
                 })
             );
+
+        return services;
+    }
+
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    {
+        services.AddScoped<IQueuesService, AzureStorageQueueService>();
 
         return services;
     }

@@ -14,6 +14,7 @@ builder.Host.UseSerilog();
 builder.Services.AddWebApi();
 builder.Services.AddApplicationCore();
 builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddInfrastructure();
 builder.Services.AddSecurity(builder.Configuration);
 builder.Services.AddApplicationInsightsTelemetry();
 
