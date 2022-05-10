@@ -14,6 +14,7 @@ Cada publicación contiene el código que corresponde a esa publicación, de las
 - [Logging con Serilog](https://dev.to/isaacojeda/parte-9-aspnet-core-logging-con-serilog-48o4)
 - [Refresh Tokens](https://dev.to/isaacojeda/parte-10-aspnet-refresh-tokens-4em)
 - [Application Performance Monitoring](https://dev.to/isaacojeda/parte-11-aspnet-core-application-insights-y-serilog-3103)
+- [Background Jobs y Queues](https://dev.to/isaacojeda/parte-12-azure-functions-background-jobs-42ih)
 - Próximamente más⌛...
 
 ## Temas de las publicaciones
@@ -29,4 +30,5 @@ La intención de esta serie de posts es para aprender sobre muchos temas y conce
 - [ASP.NET Identity Core](https://github.com/dotnet/aspnetcore/tree/main/src/Identity) para seguridad y usuarios
 - [Serilog](https://github.com/serilog/serilog)
 - [Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
+- [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview)
 - Próximamente más⌛...
