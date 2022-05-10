@@ -4,6 +4,7 @@
 	<TargetFramework>net6.0</TargetFramework>
 	<Nullable>enable</Nullable>
 	<ImplicitUsings>enable</ImplicitUsings>
+	<UserSecretsId>2c78b117-2841-4395-9246-2d9e21708e98</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,11 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
+	<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  <PrivateAssets>all</PrivateAssets>
 	</PackageReference>
 	<PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+	<PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.1.0" />
   </ItemGroup>
 
   

@@ -1,10 +1,13 @@
 ﻿using MediatR;
+using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Features.Auth;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using Respawn;
 using System;
 using System.Linq.Expressions;
 using System.Net.Http;
@@ -21,12 +24,15 @@ public class TestBase
     /// Crea un usuario de prueba según los parámetros
     /// </summary>
     /// <returns></returns>
-    public async Task<(HttpClient Client, string UserId)> CreateTestUser(string userName, string password, string[] roles)
+    public async Task<(HttpClient Client, string UserId, TokenCommandResponse AuthInfo)> CreateTestUser(string userName, string password, string[] roles)
     {
         using var scope = Application.Services.CreateScope();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-        var newUser = new IdentityUser(userName);
+        var newUser = new User
+        {
+            UserName = userName
+        };
 
         await userManager.CreateAsync(newUser, password);
 
@@ -35,12 +41,12 @@ public class TestBase
             await userManager.AddToRoleAsync(newUser, role);
         }
 
-        var accessToken = await GetAccessToken(userName, password);
+        var authResponse = await GetAccessToken(userName, password);
 
         var client = Application.CreateClient();
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResponse.AccessToken);
 
-        return (client, newUser.Id);
+        return (client, newUser.Id, authResponse);
     }
 
     /// <summary>
@@ -56,13 +62,13 @@ public class TestBase
     /// <summary>
     /// Crea un HttpClient incluyendo un JWT válido con usuario Admin
     /// </summary>
-    public Task<(HttpClient Client, string UserId)> GetClientAsAdmin() =>
+    public Task<(HttpClient Client, string UserId, TokenCommandResponse AuthInfo)> GetClientAsAdmin() =>
         CreateTestUser("user@admin.com", "Pass.W0rd", new string[] { "Admin" });
 
     /// <summary>
     /// Crea un HttpClient incluyendo un JWT válido con usuario default
     /// </summary>
-    public Task<(HttpClient Client, string UserId)> GetClientAsDefaultUserAsync() =>
+    public Task<(HttpClient Client, string UserId, TokenCommandResponse AuthInfo)> GetClientAsDefaultUserAsync() =>
         CreateTestUser("user@normal.com", "Pass.W0rd", Array.Empty<string>());
 
     /// <summary>
@@ -100,7 +106,7 @@ public class TestBase
     /// <summary>
     /// Shortcut para agregar Entities a la BD
     /// </summary>
-    protected async Task<TEntity> AddAsync<TEntity>(TEntity entity) where TEntity : class
+    public async Task<TEntity> AddAsync<TEntity>(TEntity entity) where TEntity : class
     {
         using var scope = Application.Services.CreateScope();
 
@@ -116,7 +122,7 @@ public class TestBase
     /// <summary>
     /// Shortcut para buscar entities por primary key
     /// </summary>
-    protected async Task<TEntity> FindAsync<TEntity>(params object[] keyValues) where TEntity : class
+    public async Task<TEntity> FindAsync<TEntity>(params object[] keyValues) where TEntity : class
     {
         using var scope = Application.Services.CreateScope();
 
@@ -128,7 +134,7 @@ public class TestBase
     /// <summary>
     /// Shortcut para buscar entities según un criterio
     /// </summary>
-    protected async Task<TEntity> FindAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
+    public async Task<TEntity> FindAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
     {
         using var scope = Application.Services.CreateScope();
 
@@ -151,7 +157,7 @@ public class TestBase
     /// <summary>
     /// Shortcut para autenticar un usuario para pruebas
     /// </summary>
-    private async Task<string> GetAccessToken(string userName, string password)
+    public async Task<TokenCommandResponse> GetAccessToken(string userName, string password)
     {
         using var scope = Application.Services.CreateScope();
 
@@ -161,20 +167,36 @@ public class TestBase
             Password = password
         });
 
-        return result.AccessToken;
+        return result;
     }
-    /// <summary>
-    /// Se asegura de limpiar la BD
-    /// </summary>
-    /// <returns></returns>
+
+
     private async Task ResetState()
     {
         using var scope = Application.Services.CreateScope();
         var context = scope.ServiceProvider.GetService<MyAppDbContext>();
+        var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
+        var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
 
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
+        if (context.Database.IsSqlite())
+        {
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+        }
+        else if (context.Database.IsSqlServer())
+        {
+            var checkpoint = new Checkpoint
+            {
+                TablesToIgnore = new[] { "__EFMigrationsHistory" }
+            };
+            var config = scope.ServiceProvider.GetService<IConfiguration>();
+
+            await checkpoint.Reset(config.GetConnectionString("Default"));
+
+        }
 
         await MyAppDbContextSeed.SeedDataAsync(context);
+        await MyAppDbContextSeed.SeedUsersAsync(userManager, roleManager);
     }
+
 }

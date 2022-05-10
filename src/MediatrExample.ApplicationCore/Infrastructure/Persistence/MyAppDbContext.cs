@@ -1,11 +1,11 @@
 ﻿using MediatrExample.ApplicationCore.Common.Interfaces;
 using MediatrExample.ApplicationCore.Domain;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace MediatrExample.ApplicationCore.Infrastructure.Persistence;
-public class MyAppDbContext : IdentityDbContext<IdentityUser>
+public class MyAppDbContext : IdentityDbContext<User>
 {
     private readonly CurrentUser _user;
 
@@ -17,6 +17,9 @@ public class MyAppDbContext : IdentityDbContext<IdentityUser>
     }
 
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<Checkout> Checkouts => Set<Checkout>();
+    public DbSet<CheckoutProduct> CheckoutProducts => Set<CheckoutProduct>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -37,5 +40,13 @@ public class MyAppDbContext : IdentityDbContext<IdentityUser>
         }
 
         return await base.SaveChangesAsync(cancellationToken);
+    }
+
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        base.OnModelCreating(builder);
     }
 }

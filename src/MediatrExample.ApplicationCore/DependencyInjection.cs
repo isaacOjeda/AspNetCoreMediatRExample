@@ -3,9 +3,13 @@ using FluentValidation;
 using MediatR;
 using MediatrExample.ApplicationCore.Common.Behaviours;
 using MediatrExample.ApplicationCore.Common.Interfaces;
+using MediatrExample.ApplicationCore.Common.Services;
+using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
+using MediatrExample.ApplicationCore.Infrastructure.Services.AzureQueues;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -23,12 +27,24 @@ public static class DependencyInjection
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+        services.AddScoped<AuthService>();
+
         return services;
     }
 
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSqlite<MyAppDbContext>(configuration.GetConnectionString("Default"));
+        services.AddDbContext<MyAppDbContext>(options =>
+        {
+            if (configuration.GetValue<bool>("UseInMemory"))
+            {
+                options.UseInMemoryDatabase(nameof(MyAppDbContext));
+            }
+            else
+            {
+                options.UseSqlServer(configuration.GetConnectionString("Default"));
+            }
+        });
 
         Configuration.Setup()
             .UseAzureStorageBlobs(config => config
@@ -45,11 +61,18 @@ public static class DependencyInjection
         return services;
     }
 
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    {
+        services.AddScoped<IQueuesService, AzureStorageQueueService>();
+
+        return services;
+    }
+
     public static IServiceCollection AddSecurity(this IServiceCollection services, IConfiguration config)
     {
 
         services
-            .AddIdentityCore<IdentityUser>()
+            .AddIdentityCore<User>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<MyAppDbContext>();
 

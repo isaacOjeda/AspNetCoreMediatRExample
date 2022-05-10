@@ -15,7 +15,7 @@ public class CreateProductCommandTests : TestBase
     public async Task Product_IsCreated_WhenValidFieldsAreProvided_AndUserIsAdmin()
     {
         // Arrenge
-        var (Client, UserId) = await GetClientAsAdmin();
+        var (Client, UserId, _) = await GetClientAsAdmin();
 
         // Act
         var command = new CreateProductCommand
@@ -43,7 +43,7 @@ public class CreateProductCommandTests : TestBase
     public async Task Product_IsNotCreated_WhenInvalidFieldsAreProvided_AndUserIsAdmin()
     {
         // Arrenge
-        var (Client, UserId) = await GetClientAsAdmin();
+        var (Client, UserId, _) = await GetClientAsAdmin();
 
         // Act
         var command = new CreateProductCommand
@@ -70,7 +70,7 @@ public class CreateProductCommandTests : TestBase
             Description = "Test Product",
             Price = 999
         };
-        var (Client, UserId) = await GetClientAsDefaultUserAsync();
+        var (Client, UserId, _) = await GetClientAsDefaultUserAsync();
 
         // Act        
         var result = await Client.PostAsJsonAsync("api/products", command);

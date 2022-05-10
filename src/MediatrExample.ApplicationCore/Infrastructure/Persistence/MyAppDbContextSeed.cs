@@ -26,18 +26,18 @@ public class MyAppDbContextSeed
             await context.SaveChangesAsync();
         }
     }
-    public static async Task SeedUsersAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public static async Task SeedUsersAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
         var testUser = await userManager.FindByNameAsync("test_user");
         if (testUser is null)
         {
-            testUser = new IdentityUser
+            testUser = new User
             {
                 UserName = "test_user"
             };
 
             await userManager.CreateAsync(testUser, "Passw0rd.1234");
-            await userManager.CreateAsync(new IdentityUser
+            await userManager.CreateAsync(new User
             {
                 UserName = "other_user"
             }, "Passw0rd.1234");

@@ -13,5 +13,5 @@ public static class AppHelpers
         GetHasher().Decode(encoded).FirstOrDefault();
 
 
-    private static Hashids GetHasher() => new(HashIdsSalt, 8);
+    private static Hashids GetHasher() => new(HashIdsSalt, 16);
 }

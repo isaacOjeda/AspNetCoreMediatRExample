@@ -14,7 +14,7 @@ public class GetProductsQueryTests : TestBase
     public async Task Products_Obtained_WithAuthenticatedUser()
     {
         // Arrenge
-        var (Client, UserId) = await GetClientAsDefaultUserAsync();
+        var (Client, UserId, _) = await GetClientAsDefaultUserAsync();
 
 
         // Act
