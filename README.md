@@ -15,6 +15,7 @@ Cada publicación contiene el código que corresponde a esa publicación, de las
 - [Refresh Tokens](https://dev.to/isaacojeda/parte-10-aspnet-refresh-tokens-4em)
 - [Application Performance Monitoring](https://dev.to/isaacojeda/parte-11-aspnet-core-application-insights-y-serilog-3103)
 - [Background Jobs y Queues](https://dev.to/isaacojeda/parte-12-azure-functions-background-jobs-42ih)
+- [EF Core: Dynamic sort](https://dev.to/isaacojeda/parte-13-ef-core-dynamic-sort-con-linq-expressi-nj9)
 - Próximamente más⌛...
 
 ## Temas de las publicaciones
