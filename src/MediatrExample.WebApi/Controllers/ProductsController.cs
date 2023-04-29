@@ -24,7 +24,8 @@ public class ProductsController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public Task<List<GetProductsQueryResponse>> GetProducts() => _mediator.Send(new GetProductsQuery());
+    public Task<List<GetProductsQueryResponse>> GetProducts([FromQuery] GetProductsQuery query) =>
+        _mediator.Send(query);
 
     /// <summary>
     /// Crea un producto nuevo

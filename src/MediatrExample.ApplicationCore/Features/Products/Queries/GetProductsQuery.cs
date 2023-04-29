@@ -4,13 +4,15 @@ using MediatR;
 using MediatrExample.ApplicationCore.Common.Helpers;
 using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
+using MediatrExample.ApplicationCore.Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace MediatrExample.ApplicationCore.Features.Products.Queries;
 
 public class GetProductsQuery : IRequest<List<GetProductsQueryResponse>>
 {
-
+    public string? SortDir { get; set; }
+    public string? SortProperty { get; set; }
 }
 
 public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, List<GetProductsQueryResponse>>
@@ -27,6 +29,7 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, List<Ge
     public Task<List<GetProductsQueryResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken) =>
         _context.Products
             .AsNoTracking()
+            .OrderBy($"{request.SortProperty} {request.SortDir}")
             .ProjectTo<GetProductsQueryResponse>(_mapper.ConfigurationProvider)
             .ToListAsync();
 }
