@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
+using MediatrExample.ApplicationCore.Common.Models;
 using MediatrExample.ApplicationCore.Features.Products.Queries;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -11,18 +13,21 @@ public class GetProductsQueryTests : TestBase
 {
 
     [Test]
-    public async Task Products_Obtained_WithAuthenticatedUser()
+    [TestCase(10)]
+    [TestCase(20)]
+    [TestCase(30)]
+    public async Task Products_Obtained_WithAuthenticatedUser(int pageSize)
     {
         // Arrenge
         var (Client, UserId, _) = await GetClientAsDefaultUserAsync();
 
 
         // Act
-        var products = await Client.GetFromJsonAsync<List<GetProductsQueryResponse>>("/api/products");
+        var products = await Client.GetFromJsonAsync<PagedResult<GetProductsQueryResponse>>($"/api/products?pageSize={pageSize}&currentPage=1");
 
         // Assert
-        products.Should().NotBeNullOrEmpty();
-        products?.Count.Should().Be(2);
+        products.Should().NotBeNull();
+        products?.Results.Count().Should().Be(pageSize);
     }
 
     [Test]
