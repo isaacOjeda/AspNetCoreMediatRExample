@@ -1,8 +1,22 @@
-@token = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiI2Mzg5MWFlMy02OThlLTQ0ZjEtYWI1NS0xMDVmMmI4MDAwMzMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdF91c2VyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2ODI3OTAzMjksImlzcyI6IldlYkFwaUp3dC5jb20iLCJhdWQiOiJsb2NhbGhvc3QifQ.NXj2NVnd_qozs9UTeZu93tVHIApB88KBuuWe0FPHKT8
+@token = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiI2Mzg5MWFlMy02OThlLTQ0ZjEtYWI1NS0xMDVmMmI4MDAwMzMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdF91c2VyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2ODM2MDgyNzUsImlzcyI6IldlYkFwaUp3dC5jb20iLCJhdWQiOiJsb2NhbGhvc3QifQ.AbCSDGsrj66jaTUYyvdvcNOAH2qJRRXzsMc4D_3ajk0
 @host =  https://localhost:7113
 
 
 ### GET Products
-GET {{host}}/api/products?sortDir=desc&sortProperty=price
+GET {{host}}/api/products?pageSize=5&currentPage=3&sortDir=desc&sortProperty=price
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### GET Product
+GET {{host}}/api/products/Qz87dMy6n0ymlkX1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### GET Token
+POST {{host}}/api/auth
+Content-Type: application/json
+
+{
+    "password": "Passw0rd.1234",
+    "userName": "test_user"
+}

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MediatrExample.ApplicationCore.Common.Models;
 using MediatrExample.ApplicationCore.Features.Products.Commands;
 using MediatrExample.ApplicationCore.Features.Products.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +25,7 @@ public class ProductsController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public Task<List<GetProductsQueryResponse>> GetProducts([FromQuery] GetProductsQuery query) =>
+    public Task<PagedResult<GetProductsQueryResponse>> GetProducts([FromQuery] GetProductsQuery query) =>
         _mediator.Send(query);
 
     /// <summary>

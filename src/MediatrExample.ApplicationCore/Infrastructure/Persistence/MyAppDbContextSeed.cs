@@ -9,19 +9,17 @@ public class MyAppDbContextSeed
 
         if (!context.Products.Any())
         {
-            context.Products.AddRange(new List<Product>
-        {
-            new Product
-            {
-                Description = "Product 01",
-                Price = 16000
-            },
-            new Product
-            {
-                Description = "Product 02",
-                Price = 52200
-            }
-        });
+            var random = new Random();
+
+            var products = 
+                Enumerable.Range(1, 100)
+                .Select(s => new Product
+                {
+                    Description = $"Product {s}",
+                    Price = random.NextInt64(250, 999)
+                });
+
+            context.AddRange(products);
 
             await context.SaveChangesAsync();
         }

@@ -6,16 +6,19 @@ using MediatrExample.ApplicationCore.Domain;
 using MediatrExample.ApplicationCore.Infrastructure.Persistence;
 using MediatrExample.ApplicationCore.Common.Extensions;
 using Microsoft.EntityFrameworkCore;
+using MediatrExample.ApplicationCore.Common.Models;
 
 namespace MediatrExample.ApplicationCore.Features.Products.Queries;
 
-public class GetProductsQuery : IRequest<List<GetProductsQueryResponse>>
+public class GetProductsQuery : IRequest<PagedResult<GetProductsQueryResponse>>
 {
     public string? SortDir { get; set; }
     public string? SortProperty { get; set; }
+    public int CurrentPage { get; set; }
+    public int PageSize { get; set; }
 }
 
-public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, List<GetProductsQueryResponse>>
+public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, PagedResult<GetProductsQueryResponse>>
 {
     private readonly MyAppDbContext _context;
     private readonly IMapper _mapper;
@@ -26,12 +29,12 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, List<Ge
         _mapper = mapper;
     }
 
-    public Task<List<GetProductsQueryResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken) =>
+    public Task<PagedResult<GetProductsQueryResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken) =>
         _context.Products
             .AsNoTracking()
             .OrderBy($"{request.SortProperty} {request.SortDir}")
             .ProjectTo<GetProductsQueryResponse>(_mapper.ConfigurationProvider)
-            .ToListAsync();
+            .GetPagedResultAsync(request.PageSize, request.CurrentPage);
 }
 
 public class GetProductsQueryResponse
