@@ -16,6 +16,7 @@ Cada publicación contiene el código que corresponde a esa publicación, de las
 - [Application Performance Monitoring](https://dev.to/isaacojeda/parte-11-aspnet-core-application-insights-y-serilog-3103)
 - [Background Jobs y Queues](https://dev.to/isaacojeda/parte-12-azure-functions-background-jobs-42ih)
 - [EF Core: Dynamic sort](https://dev.to/isaacojeda/parte-13-ef-core-dynamic-sort-con-linq-expressi-nj9)
+- [EF Core: Paginación](https://dev.to/isaacojeda/parte-14-ef-core-paginacion-398b)
 - Próximamente más⌛...
 
 ## Temas de las publicaciones
@@ -32,4 +33,5 @@ La intención de esta serie de posts es para aprender sobre muchos temas y conce
 - [Serilog](https://github.com/serilog/serilog)
 - [Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
 - [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview)
+- [Entity Framework Core](https://learn.microsoft.com/en-us/ef/core/)
 - Próximamente más⌛...
