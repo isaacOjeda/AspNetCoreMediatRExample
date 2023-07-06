@@ -27,15 +27,13 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand>
     }
 
 
-    public async Task<Unit> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         var newProduct = _mapper.Map<Product>(request);
 
         _context.Products.Add(newProduct);
 
         await _context.SaveChangesAsync();
-
-        return Unit.Value;
     }
 }
 public class CreateProductCommandMapper : Profile

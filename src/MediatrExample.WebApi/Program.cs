@@ -20,13 +20,7 @@ builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .WriteTo.ApplicationInsights(app.Services.GetRequiredService<TelemetryConfiguration>(), TelemetryConverter.Traces)
-    // .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
+CreateSerilogLogger(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -81,4 +75,15 @@ async Task SeedProducts()
         await MyAppDbContextSeed.SeedUsersAsync(userManager, roleManager);
     }
 
+}
+
+void CreateSerilogLogger(WebApplication app)
+{
+    Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .WriteTo.ApplicationInsights(app.Services.GetRequiredService<TelemetryConfiguration>(), TelemetryConverter.Traces)
+        // .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+        .CreateLogger();
 }

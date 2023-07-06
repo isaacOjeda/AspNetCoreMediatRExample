@@ -36,12 +36,11 @@ public class NewCheckoutCommandHandler : IRequestHandler<NewCheckoutCommand>
         _user = currentUserService.User;
     }
 
-    public async Task<Unit> Handle(NewCheckoutCommand request, CancellationToken cancellationToken)
+    public async Task Handle(NewCheckoutCommand request, CancellationToken cancellationToken)
     {
         Checkout newCheckout = await CreateCheckoutAsync(request, cancellationToken);
-        await QueueCheckout(newCheckout);
 
-        return Unit.Value;
+        await QueueCheckout(newCheckout);
     }
 
     private async Task<Checkout> CreateCheckoutAsync(NewCheckoutCommand request, CancellationToken cancellationToken)

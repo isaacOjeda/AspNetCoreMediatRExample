@@ -24,7 +24,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
         _context = context;
     }
 
-    public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var productId = request.ProductId.FromHashId();
         var product = await _context.Products.FindAsync(productId);
@@ -38,8 +38,6 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
         product.Price = request.Price;
 
         await _context.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }
 

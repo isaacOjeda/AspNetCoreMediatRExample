@@ -185,13 +185,13 @@ public class TestBase
         }
         else if (context.Database.IsSqlServer())
         {
-            var checkpoint = new Checkpoint
-            {
-                TablesToIgnore = new[] { "__EFMigrationsHistory" }
-            };
             var config = scope.ServiceProvider.GetService<IConfiguration>();
+            var respawner = await Respawner.CreateAsync(config.GetConnectionString("Default"), new RespawnerOptions
+            {
+                TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" }
+            });
 
-            await checkpoint.Reset(config.GetConnectionString("Default"));
+            await respawner.ResetAsync(config.GetConnectionString("Default"));
 
         }
 

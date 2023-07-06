@@ -1,6 +1,5 @@
 ﻿using Audit.Core;
 using FluentValidation;
-using MediatR;
 using MediatrExample.ApplicationCore.Common.Behaviours;
 using MediatrExample.ApplicationCore.Common.Interfaces;
 using MediatrExample.ApplicationCore.Common.Services;
@@ -22,9 +21,14 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationCore(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddMediatR(Assembly.GetExecutingAssembly());
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuditLogsBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+
+            config.AddOpenBehavior(typeof(AuditLogsBehavior<,>));
+            config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+        });
+
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.AddScoped<AuthService>();

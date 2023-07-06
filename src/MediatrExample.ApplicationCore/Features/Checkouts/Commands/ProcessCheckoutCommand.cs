@@ -24,7 +24,7 @@ public class ProcessCheckoutCommandHandler : IRequestHandler<ProcessCheckoutComm
         _logger = logger;
     }
 
-    public async Task<Unit> Handle(ProcessCheckoutCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ProcessCheckoutCommand request, CancellationToken cancellationToken)
     {
         var checkout = await _context.Checkouts.FindAsync(request.CheckoutId);
 
@@ -48,7 +48,5 @@ public class ProcessCheckoutCommandHandler : IRequestHandler<ProcessCheckoutComm
         _logger.LogWarning("Se procesó una orden con costo total de {Total:C}", checkout.Total);
 
         await _context.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

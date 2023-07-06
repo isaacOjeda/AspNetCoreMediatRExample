@@ -9,7 +9,7 @@ using System.Reflection;
 namespace MediatrExample.ApplicationCore.Common.Behaviours;
 
 public class AuditLogsBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-     where TRequest : IRequest<TResponse>
+     where TRequest : notnull
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<AuditLogsBehavior<TRequest, TResponse>> _logger;
@@ -25,7 +25,7 @@ public class AuditLogsBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest
         _config = config;
     }
 
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _logger.LogInformation("{RequetsName}: {@User} with request {@Request}",
             typeof(TRequest).Name, _currentUserService.User.Id, request);
